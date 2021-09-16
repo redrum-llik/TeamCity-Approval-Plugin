@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans     xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+           default-autowire="constructor">
+  <bean id="approvalBuildFeature" class="jetbrains.buildServer.approvalPlugin.buildFeature.ApprovalBuildFeature"/>
+  <bean id="approvableBuildListener" class="jetbrains.buildServer.approvalPlugin.ApprovableBuildListener" init-method="register"/>
+  <bean id="waitApprovalBuildPrecondition" class="jetbrains.buildServer.approvalPlugin.WaitApprovalBuildPrecondition"/>
+
+  <bean id="approvalsAdminPage" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalsAdminPage"/>
+  <bean id="approveBuildActionExtension" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalBuildOverviewExtension"/>
+  <bean id="approvalsHeaderLinkExtension" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalsHeaderLinkExtension"/>
+  <bean id="approveBuildController" class="jetbrains.buildServer.approvalPlugin.controllers.ApproveBuildController"/>
+</beans>

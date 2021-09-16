@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/server/build.gradle.kts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/server/build.gradle.kts" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/server/src" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/server/src" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/server/src/main/resources" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/server/teamcity-plugin.xml" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/server/teamcity-plugin.xml" charset="UTF-8" />
+  </component>
+</project>
