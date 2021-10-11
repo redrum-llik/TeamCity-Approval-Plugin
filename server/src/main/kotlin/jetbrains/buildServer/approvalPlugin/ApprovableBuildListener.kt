@@ -1,5 +1,7 @@
 package jetbrains.buildServer.approvalPlugin
 
+import com.intellij.openapi.diagnostic.Logger
+import jetbrains.buildServer.approvalPlugin.util.*
 import jetbrains.buildServer.log.Loggers
 import jetbrains.buildServer.serverSide.BuildServerAdapter
 import jetbrains.buildServer.serverSide.SBuildServer
@@ -9,14 +11,20 @@ import org.jetbrains.annotations.NotNull
 
 
 class ApprovableBuildListener(private val sBuildServer: SBuildServer) : BuildServerAdapter() {
+    private val LOG = Logger.getInstance(this.javaClass.name)
+
     private fun register() {
         sBuildServer.addListener(this)
     }
 
     override fun buildTypeAddedToQueue(@NotNull queuedBuild: SQueuedBuild) {
-        if (ApprovableBuildUtil.hasApprovalFeatureEnabled(queuedBuild)) {
-            Loggers.SERVER.debug("${LogUtil.describe(queuedBuild)}: marking as requiring approval")
-            ApprovableBuildUtil.markBuildNeedsApproval(queuedBuild)
+        val buildPromotionEx = queuedBuild.getBuildPromotionEx()
+        if (buildPromotionEx.hasApprovalFeatureEnabled()) {
+            LOG.debug("${LogUtil.describe(queuedBuild)}: marking as requiring approval")
+            buildPromotionEx.markAsRequiringApproval()
+            buildPromotionEx.setTimeout(
+                buildPromotionEx.getApprovalFeatureConfiguration().getTimeout()
+            )
         }
     }
 }

@@ -8,6 +8,7 @@
   <bean id="waitApprovalBuildPrecondition" class="jetbrains.buildServer.approvalPlugin.WaitApprovalBuildPrecondition"/>
 
   <bean id="approvalsAdminPage" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalsAdminPage"/>
+  <bean id="approvalBuildOverviewExtensionController" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalBuildOverviewExtensionController" />
   <bean id="approveBuildActionExtension" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalBuildOverviewExtension"/>
   <bean id="approvalsHeaderLinkExtension" class="jetbrains.buildServer.approvalPlugin.controllers.ApprovalsHeaderLinkExtension"/>
   <bean id="approveBuildController" class="jetbrains.buildServer.approvalPlugin.controllers.ApproveBuildController"/>

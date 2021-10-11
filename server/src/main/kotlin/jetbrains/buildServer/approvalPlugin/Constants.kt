@@ -11,10 +11,11 @@ object Constants {
 
     // default values
     const val DEFAULT_APPROVALS_COUNT = 1
-    const val DEFAULT_TIMEOUT_SECONDS = 21600
+    const val DEFAULT_TIMEOUT_SECONDS = 21600.toLong()
 
     // build promotion attributes
     const val NEEDS_APPROVAL = "teamcity.build.approval.required"
     const val APPROVED_BY = "teamcity.build.approval.approvedBy"
+    const val TIMEOUT_AT = "teamcity.build.approval.timeoutAt"
 }
 

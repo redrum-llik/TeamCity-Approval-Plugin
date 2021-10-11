@@ -1,28 +1,47 @@
 package jetbrains.buildServer.approvalPlugin.controllers
 
-import jetbrains.buildServer.serverSide.SBuildServer
-import jetbrains.buildServer.web.openapi.*
+import com.intellij.openapi.diagnostic.Logger
+import jetbrains.buildServer.approvalPlugin.util.hasApprovalFeatureEnabled
+import jetbrains.buildServer.serverSide.BuildPromotionEx
+import jetbrains.buildServer.serverSide.BuildPromotionManager
+import jetbrains.buildServer.web.openapi.PagePlaces
+import jetbrains.buildServer.web.openapi.PlaceId
+import jetbrains.buildServer.web.openapi.PluginUIContext
+import jetbrains.buildServer.web.openapi.SimplePageExtension
 import jetbrains.buildServer.web.util.SessionUser
+import jetbrains.buildServer.web.util.WebUtil
 import javax.servlet.http.HttpServletRequest
-import jetbrains.buildServer.approvalPlugin.ApprovableBuildUtil as ABL
+
 
 class ApprovalBuildOverviewExtension(
-    pagePlaces: PagePlaces,
-    descriptor: PluginDescriptor,
-    private val myServer: SBuildServer
+    private val promotionManager: BuildPromotionManager,
+    pagePlaces: PagePlaces
 ) : SimplePageExtension(
     pagePlaces,
     PlaceId("SAKURA_BUILD_OVERVIEW"),
     "approveBuildAction",
-    descriptor.getPluginResourcesPath("approveBuildOverview.jsp")
+    "/approvalBuildOverviewExtension.html"
 ) {
     init {
         register()
     }
 
+    private val LOG = Logger.getInstance(this.javaClass.name)
+
     override fun isAvailable(request: HttpServletRequest): Boolean {
-        val user = SessionUser.getUser(request) ?: return false
-        return true
-        // TODO(resolve build and )
+        if (WebUtil.sakuraUIOpened(request)) {
+            val pluginUIContext = PluginUIContext.getFromRequest(request)
+            val buildId = pluginUIContext.buildId
+            if (buildId != null) {
+                val buildPromotionEx = promotionManager
+                    .findPromotionById(buildId) as BuildPromotionEx
+                if (buildPromotionEx.hasApprovalFeatureEnabled()) {
+                    return true
+                }
+            } else {
+                LOG.debug("pluginUiContext is present but buildId is missing")
+            }
+        }
+        return false
     }
 }

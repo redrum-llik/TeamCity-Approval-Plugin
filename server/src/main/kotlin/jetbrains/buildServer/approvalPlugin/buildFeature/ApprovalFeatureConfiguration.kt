@@ -15,11 +15,15 @@ class ApprovalFeatureConfiguration(private val params: MutableMap<String, String
         }
     }
 
-    fun getTimeout(): Int {
-        val count = params[Constants.FEATURE_SETTING_TIMEOUT]?.toInt()
+    fun hasCustomApprovalsCount(): Boolean {
+        return getRequiredApprovalsCount() != Constants.DEFAULT_APPROVALS_COUNT
+    }
+
+    fun getTimeout(): Long {
+        val timeoutSeconds = params[Constants.FEATURE_SETTING_TIMEOUT]?.toLong()
         return when {
-            count != null && count > 0 -> {
-                count
+            timeoutSeconds != null && timeoutSeconds > 0 -> {
+                timeoutSeconds
             }
             else -> {
                 Constants.DEFAULT_TIMEOUT_SECONDS

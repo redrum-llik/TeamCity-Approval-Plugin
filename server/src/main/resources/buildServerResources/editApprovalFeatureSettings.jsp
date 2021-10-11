@@ -15,7 +15,7 @@
 <tr id="approvals_count">
     <th><label for="${approvalsCountBean.key}">${approvalsCountBean.label}</label></th>
     <td>
-        <props:textProperty name="${approvalsCountBean.key}" className="mediumField" maxlength="2" size="8"/>
+        <props:textProperty name="${approvalsCountBean.key}" className="mediumField" maxlength="2"/>
         <span class="smallNote">${approvalsCountBean.description}</span>
     </td>
 </tr>
@@ -23,7 +23,7 @@
 <tr class="advancedSetting" id="timeout">
     <th><label for="${timeoutBean.key}">${timeoutBean.label}</label></th>
     <td>
-        <props:textProperty name="${timeoutBean.key}" className="mediumField" size="8"/>
+        <props:textProperty name="${timeoutBean.key}" className="mediumField"/>
         <span class="smallNote">${timeoutBean.description}</span>
     </td>
 </tr>
