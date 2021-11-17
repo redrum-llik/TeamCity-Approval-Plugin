@@ -1,40 +1,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/include-internal.jsp" %>
 
-<%--@elvariable id="buildId" type="java.lang.Long"--%>
-<%--@elvariable id="isQueued" type="java.lang.Boolean"--%>
-<%--@elvariable id="timeoutTimestampDescribed" type="java.lang.String"--%>
-<%--@elvariable id="currentApprovalCount" type="java.lang.Integer"--%>
-<%--@elvariable id="requiredApprovalCount" type="java.lang.Integer"--%>
-<%--@elvariable id="currentlyApprovedBy" type="java.lang.String"--%>
-<%--@elvariable id="isApprovedByCurrentUser" type="java.lang.Boolean"--%>
-<%--@elvariable id="isApprovableByCurrentUser" type="java.lang.Boolean"--%>
+<%@ page import="jetbrains.buildServer.approvalPlugin.util.BuildPromotionUtilKt" %>
 
-<div class="BuildOverviewTab__oneLine--TY">
-    <div class="BuildOverviewTab__queueInfo--3H">
-        <c:choose>
-            <c:when test="${currentApprovalCount > 0}">
-                <div title="${currentlyApprovedBy}">
-                    Approvals: <u>${currentApprovalCount}/${requiredApprovalCount}</u>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div>
-                    Approvals: ${currentApprovalCount}/${requiredApprovalCount}
-                </div>
-            </c:otherwise>
-        </c:choose>
+<%--@elvariable id="buildPromotionEx" type="jetbrains.buildServer.serverSide.BuildPromotionEx"--%>
+<%--@elvariable id="user" type="jetbrains.buildServer.users.SUser"--%>
+
+<div>
+    <div>
+        <div title="${BuildPromotionUtilKt.describeApprovedBy(buildPromotionEx)}">
+            Approvals: <u>
+                ${BuildPromotionUtilKt.getApprovedBy(buildPromotionEx).size()}/${BuildPromotionUtilKt.getApprovalFeatureConfiguration(buildPromotionEx).requiredApprovalsCount}
+            </u>
+        </div>
     </div>
-    <c:if test="${isQueued}">
+    <c:if test="${buildPromotionEx.queuedBuild != null}">
         <div>
-            Waiting for approval (${timeoutTimestampDescribed} left)
+            Waiting for approval (${BuildPromotionUtilKt.describeTimeoutDelta(buildPromotionEx)} left)
         </div>
     </c:if>
 </div>
 
-<c:if test="${isApprovableByCurrentUser && not isApprovedByCurrentUser}">
+<c:if test="${buildPromotionEx.queuedBuild != null && BuildPromotionUtilKt.isApprovableByUser(buildPromotionEx, user) && not BuildPromotionUtilKt.isApprovedByUser(buildPromotionEx, user)}">
     <p>
-        <button onclick="BS.ApprovalLogic.postApproveRequest()" class="ring-button-button ring-button-group-button ring-button-set-button ring-button-toolbar-button ring-button-light ring-button-primary">
+        <button onclick="BS.ApprovalLogic.postApproveRequest()" style="height: 24px; width: 85px; border-radius: 3px; background-color: rgb(0,142,255); border-width: 0; font-size: 12px; color: rgb(255,255,255);">
             Approve...
         </button>
     </p>
@@ -45,7 +34,7 @@
     BS.ApprovalLogic = {
         postApproveRequest: function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/approveBuild.html?buildId=${buildId}", true)
+            xhr.open("POST", "/approveBuild.html?buildId=${buildPromotionEx.id}", true)
             xhr.onreadystatechange = function() {
                 window.location.reload(false)
             }

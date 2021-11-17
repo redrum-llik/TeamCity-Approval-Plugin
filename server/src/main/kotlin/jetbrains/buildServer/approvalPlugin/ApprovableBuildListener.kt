@@ -21,10 +21,21 @@ class ApprovableBuildListener(private val sBuildServer: SBuildServer) : BuildSer
         val buildPromotionEx = queuedBuild.getBuildPromotionEx()
         if (buildPromotionEx.hasApprovalFeatureEnabled()) {
             LOG.debug("${LogUtil.describe(queuedBuild)}: marking as requiring approval")
-            buildPromotionEx.markAsRequiringApproval()
+            val featureConfiguration = buildPromotionEx.getApprovalFeatureConfiguration()
+
+            buildPromotionEx.markAsRequiringApproval() // watched by WaitApprovalBuildPrecondition
             buildPromotionEx.setTimeout(
-                buildPromotionEx.getApprovalFeatureConfiguration().getTimeout()
+                featureConfiguration.getTimeout()
             )
+
+            if (featureConfiguration.treatManualStartOfBuildAsApproval()) { // if started by user who can approve, add one approval to promotion
+                if (queuedBuild.triggeredBy.isTriggeredByUser) {
+                    val user = queuedBuild.triggeredBy.user!! // asserted by isTriggeredByUser
+                    if (buildPromotionEx.isApprovableByUser(user)) {
+                        buildPromotionEx.addApprovedByUser(user)
+                    }
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
 
 <jsp:useBean id="approvalsCountBean" class="jetbrains.buildServer.approvalPlugin.buildFeature.beans.ApprovalsCountBean"/>
 <jsp:useBean id="timeoutBean" class="jetbrains.buildServer.approvalPlugin.buildFeature.beans.TimeoutBean"/>
+<jsp:useBean id="manualStartIsApprovalBean" class="jetbrains.buildServer.approvalPlugin.buildFeature.beans.ManualStartIsApprovalBean"/>
 
 <tr>
     <td colspan="2">
@@ -25,5 +26,13 @@
     <td>
         <props:textProperty name="${timeoutBean.key}" className="mediumField"/>
         <span class="smallNote">${timeoutBean.description}</span>
+    </td>
+</tr>
+
+<tr class="advancedSetting" id="manual_start_is_approval">
+    <th><label for="${manualStartIsApprovalBean.key}">${manualStartIsApprovalBean.label}</label></th>
+    <td>
+        <props:checkboxProperty name="${manualStartIsApprovalBean.key}"/>
+        <span class="smallNote">${manualStartIsApprovalBean.description}</span>
     </td>
 </tr>

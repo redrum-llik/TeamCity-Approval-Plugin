@@ -1,11 +1,9 @@
 package jetbrains.buildServer.approvalPlugin.controllers
 
-import jetbrains.buildServer.approvalPlugin.util.*
 import jetbrains.buildServer.controllers.BaseFormXmlController
-import jetbrains.buildServer.controllers.BuildDataExtensionUtil
-import jetbrains.buildServer.log.Loggers
-import jetbrains.buildServer.serverSide.*
-import jetbrains.buildServer.serverSide.impl.LogUtil
+import jetbrains.buildServer.serverSide.BuildPromotionEx
+import jetbrains.buildServer.serverSide.BuildPromotionManager
+import jetbrains.buildServer.serverSide.SBuildServer
 import jetbrains.buildServer.users.SUser
 import jetbrains.buildServer.web.openapi.PluginDescriptor
 import jetbrains.buildServer.web.openapi.PluginUIContext
@@ -15,7 +13,6 @@ import jetbrains.buildServer.web.util.WebUtil
 import org.jdom.Element
 import org.springframework.security.web.firewall.RequestRejectedException
 import org.springframework.web.servlet.ModelAndView
-import java.util.stream.Collectors
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -35,14 +32,8 @@ class ApprovalBuildOverviewExtensionController(
         )
 
         val modelMap = mutableMapOf(
-            "buildId" to buildPromotionEx.id,
-            "isQueued" to (buildPromotionEx.queuedBuild != null),
-            "timeoutTimestampDescribed" to buildPromotionEx.describeTimeoutDelta(),
-            "currentApprovalCount" to buildPromotionEx.getApprovedBy().size,
-            "requiredApprovalCount" to buildPromotionEx.getApprovalFeatureConfiguration().getRequiredApprovalsCount(),
-            "currentlyApprovedBy" to buildPromotionEx.getApprovedBy().joinToString(),
-            "isApprovedByCurrentUser" to buildPromotionEx.isApprovedByUser(user),
-            "isApprovableByCurrentUser" to buildPromotionEx.isApprovableByUser(user)
+            "buildPromotionEx" to buildPromotionEx,
+            "user" to user
         )
 
         mav.addAllObjects(modelMap)

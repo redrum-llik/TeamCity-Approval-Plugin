@@ -8,6 +8,7 @@ object Constants {
     // feature variables
     const val FEATURE_SETTING_APPROVALS_COUNT = "approversCount"
     const val FEATURE_SETTING_TIMEOUT = "timeout"
+    const val FEATURE_SETTING_MANUAL_START_IS_APPROVAL = "manualStartIsApproval"
 
     // default values
     const val DEFAULT_APPROVALS_COUNT = 1

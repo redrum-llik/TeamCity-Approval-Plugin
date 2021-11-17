@@ -30,4 +30,8 @@ class ApprovalFeatureConfiguration(private val params: MutableMap<String, String
             }
         }
     }
+
+    fun treatManualStartOfBuildAsApproval(): Boolean {
+        return params[Constants.FEATURE_SETTING_MANUAL_START_IS_APPROVAL].toBoolean()
+    }
 }

@@ -28,7 +28,19 @@ class ApprovalBuildFeature(descriptor: PluginDescriptor) : BuildFeature() {
                 appendLine("Build will stay in queue until it is approved")
             }
 
+            if (config.treatManualStartOfBuildAsApproval()) {
+                appendLine("Build started by a user with sufficient permissions will be marked as approved")
+            } else {
+                appendLine("Build requires explicit approval, even from the user who starts it")
+            }
+
             appendLine("Build will be cancelled after ${describeTimePeriod(config.getTimeout())}")
         }
+    }
+
+    override fun getDefaultParameters(): MutableMap<String, String> {
+        return mutableMapOf(
+            Constants.FEATURE_SETTING_MANUAL_START_IS_APPROVAL to true.toString()
+        )
     }
 }

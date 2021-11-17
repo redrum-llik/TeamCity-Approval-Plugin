@@ -98,6 +98,23 @@ fun BuildPromotionEx.getApprovedBy(): MutableSet<String> {
 }
 
 /**
+ * Describe a list of users who have approved this build promotion.
+ */
+
+fun BuildPromotionEx.describeApprovedBy(): String {
+    val approvedBy = this.getApprovedBy()
+
+    return when {
+        approvedBy.isEmpty() -> {
+            "No users approved this build yet"
+        }
+        else -> {
+            approvedBy.joinToString()
+        }
+    }
+}
+
+/**
  * Returns true if current number of approvals for this build is greater or equal than the one specified in feature configuration.
  */
 

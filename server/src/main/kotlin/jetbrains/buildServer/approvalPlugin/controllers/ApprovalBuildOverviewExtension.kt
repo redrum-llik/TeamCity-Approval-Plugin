@@ -8,7 +8,6 @@ import jetbrains.buildServer.web.openapi.PagePlaces
 import jetbrains.buildServer.web.openapi.PlaceId
 import jetbrains.buildServer.web.openapi.PluginUIContext
 import jetbrains.buildServer.web.openapi.SimplePageExtension
-import jetbrains.buildServer.web.util.SessionUser
 import jetbrains.buildServer.web.util.WebUtil
 import javax.servlet.http.HttpServletRequest
 

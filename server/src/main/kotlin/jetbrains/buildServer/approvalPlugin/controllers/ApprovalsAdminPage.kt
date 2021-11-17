@@ -23,6 +23,7 @@ class ApprovalsAdminPage(
 ) {
     init {
         setPosition(PositionConstraint.after("builds"))
+        addCssFile("extensions.css")
         register()
     }
 
@@ -34,6 +35,7 @@ class ApprovalsAdminPage(
     override fun fillModel(model: MutableMap<String, Any>, request: HttpServletRequest) {
         val user = SessionUser.getUser(request)
         val builds = (buildQueue as BuildQueueEx).getApprovableBuilds(user)
+        model["user"] = user
         model["builds"] = builds
     }
 

@@ -2,6 +2,7 @@ package jetbrains.buildServer.approvalPlugin.util
 
 import jetbrains.buildServer.serverSide.BuildPromotionEx
 import jetbrains.buildServer.serverSide.BuildQueue
+import jetbrains.buildServer.serverSide.SProject
 import jetbrains.buildServer.serverSide.SQueuedBuild
 import jetbrains.buildServer.users.SUser
 
